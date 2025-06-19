@@ -5,11 +5,12 @@ import { analyzeNewsWithAI } from "../utils/openRouter";
 import { addToHistory } from "../redux/historySlice";
 import { parseAIResponse } from "../utils/parseAIResponse";
 
-function NewsInput() {
+function NewsInput({setIsTyping, setLoading, loading, onAgainNewsSearch}) {
   const [headline, setHeadline] = useState("");
   const [article, setArticle] = useState("");
   const [showArticleInput, setShowArticleInput] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const [isTyping, setIsTyping] = useState(false)
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -18,6 +19,8 @@ function NewsInput() {
 
     const userInput = `${headline} \n\n${article}`;
     setLoading(true);
+    setIsTyping(false)
+
     try {
       const aiText = await analyzeNewsWithAI(userInput);
       console.log(aiText)
@@ -52,7 +55,7 @@ function NewsInput() {
         placeholder="Paste news headline or short summary..."
         className="w-full md:w-[600px] p-4 rounded-xl bg-[#1a1a1d] text-white border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none placeholder-gray-500"
         value={headline}
-        onChange={(e) => setHeadline(e.target.value)}
+        onChange={(e) => {setHeadline(e.target.value); setIsTyping(true);}}
       />
 
       {showArticleInput && (
@@ -61,7 +64,7 @@ function NewsInput() {
           placeholder="Paste full article (optional)"
           className="w-full md:w-[600px] p-4 rounded-xl bg-[#1a1a1d] text-white border border-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none placeholder-gray-500"
           value={article}
-          onChange={(e) => setArticle(e.target.value)}
+          onChange={(e) => {setArticle(e.target.value); setIsTyping(true)}}
         />
       )}
 
@@ -76,6 +79,7 @@ function NewsInput() {
 
         <button
           type="submit"
+          onClick={() => onAgainNewsSearch()}
           disabled={loading}
           className={`px-6 py-2 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 transition-all ${
             loading ? "opacity-50 cursor-not-allowed" : ""

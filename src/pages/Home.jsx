@@ -1,7 +1,24 @@
 import Header from "../components/Header";
 import NewsInput from "../components/NewsInput";
+import ResultCard from "../components/ResultCard";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function Home() {
+  const history = useSelector((state) => state.history.history);
+  console.log(history);
+  let lastResult = history[0];
+
+  const [loading, setLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [feedbackComplete, setFeedbackComplete] = useState(false);
+
+  useEffect(() => {
+    setFeedbackComplete(true)
+  },[])
+
+
   return (
     <div className="min-h-screen bg-[#0f0f11] text-white px-4">
       <Header />
@@ -16,8 +33,19 @@ function Home() {
           verify its authenticity.
         </p>
 
-        <NewsInput/>
+        <NewsInput
+          setIsTyping={setIsTyping}
+          setLoading={setLoading}
+          onAgainNewsSearch={() => setFeedbackComplete(false)}
+          loading={loading}
+        />
 
+        {history.length > 0 && !isTyping && !loading && !feedbackComplete && (
+          <ResultCard
+            resultData={history[0]}
+            onFeedbackComplete={() => setFeedbackComplete(true)}
+          />
+        )}
       </main>
     </div>
   );
