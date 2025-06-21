@@ -5,17 +5,11 @@ export async function analyzeNewsWithAI(userInput) {
   const messages = [
     {
       role: "system",
-      //       content: `You're a fake news detection assistant. Always respond in the format:
-      // Result: Fake/Real/Uncertain
-      // Confidence: 0-100
-      // Explanation: Give ONE short, clear sentence explaining why. Do NOT use bullet points, stars, or markdown symbols (*, #, etc). Your explanation should be direct, professional, and concise.`,
       content: `You're a fake news detection assistant. Respond strictly in this exact format only:
-
       Result: Fake / Real / Uncertain  
       Confidence: 0 - 100  
       Explanation: One short sentence — no markdown, no lists, no asterisks.Do NOT use bullet points, stars, or markdown symbols (*, #, etc).Your explanation should be direct.
-
-      Make sure ALL fields are present. Do NOT skip Confidence. Always be concise.`,
+      Make sure ALL fields are present. Do NOT skip Result, Confidence & Explaination. Always be concise.`,
     },
     {
       role: "user",
@@ -28,11 +22,11 @@ export async function analyzeNewsWithAI(userInput) {
     headers: {
       Authorization: `Bearer ${OPENROUTE_API_KEY}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": "http://localhost:5173", // Replace with your domain later
+      "HTTP-Referer": "http://localhost:5173",
       "X-Title": "TruthCheck AI",
     },
     body: JSON.stringify({
-      model: "meta-llama/llama-3.3-8b-instruct:free",
+      model: "google/gemma-2-9b-it:free",
       messages,
     }),
   });
@@ -48,6 +42,3 @@ export async function analyzeNewsWithAI(userInput) {
 
   return aiText;
 }
-
-// meta-llama/llama-3.3-8b-instruct:free
-//google/gemma-2-9b-it:free

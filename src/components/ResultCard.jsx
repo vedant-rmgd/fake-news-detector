@@ -12,15 +12,14 @@ function ResultCard({ resultData, onFeedbackComplete }) {
   const handleFeedback = (correct) => {
     setAiCorrect(correct);
     if (correct) {
-      // Directly submit feedback without asking for correction
       dispatch(
         updateFeedback({
           id,
           feedback: { aiCorrect: true, userCorrection: "" },
         })
       );
-      setFeedbackGiven(true); // ✅ Hide form
-      onFeedbackComplete()
+      setFeedbackGiven(true);
+      onFeedbackComplete();
     }
   };
 
@@ -28,7 +27,7 @@ function ResultCard({ resultData, onFeedbackComplete }) {
     dispatch(
       updateFeedback({
         id,
-        feedback: { aiCorrect, userCorrection: userCorrection.trim() },
+        feedback: { aiCorrect: false, userCorrection: userCorrection.trim() },
       })
     );
     setFeedbackGiven(true);
@@ -36,83 +35,88 @@ function ResultCard({ resultData, onFeedbackComplete }) {
   };
 
   return (
-    <div className="bg-[#1e1e2f] text-white p-6 rounded-2xl shadow-xl border border-purple-500/30 w-full max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-2">🧠 AI Analysis Result</h2>
-
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-lg font-semibold">
-          Result:{" "}
-          <span
-            className={`text-${
-              result === "Fake" ? "red" : result === "Real" ? "green" : "yellow"
-            }-400`}
-          >
-            {result}
-          </span>
-        </span>
-        <span className="text-sm text-gray-400">
-          {new Date(createdAt).toLocaleString()}
-        </span>
+    <div className="bg-[#121212] text-white p-8 rounded-xl shadow-md border border-neutral-700 w-full max-w-4xl mx-auto mt-8 font-sans">
+      <div className="flex items-center justify-center mb-6">
+        <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-yellow-400">Fact check</h2>
       </div>
 
-      <div className="mt-2">
-        <p className="text-sm mb-1 text-purple-300 font-semibold">
-          Confidence:
-        </p>
-        <div className="relative h-4 bg-gray-800 rounded-full overflow-hidden mb-4">
-          <div
-            className="absolute left-0 top-0 h-full bg-gradient-to-r from-purple-500 to-fuchsia-600"
-            style={{ width: `${confidence}%` }}
-          />
+      <div className="space-y-6">
+        <div className="text-left">
+          <p className="text-xl font-medium">
+            Result:{" "}
+            <span
+              className={`font-semibold ${
+                result === "Fake"
+                  ? "text-red-500"
+                  : result === "Real"
+                  ? "text-green-500"
+                  : "text-yellow-400"
+              }`}
+            >
+              {result}
+            </span>
+          </p>
+        </div>
+
+        <div className="text-left">
+          <p className="text-xl font-medium mb-2">Confidence:</p>
+          <div className="flex items-center gap-4">
+            <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-green-400 transition-all duration-300"
+                style={{ width: `${confidence}%` }}
+              />
+            </div>
+            <span className="text-md font-medium text-gray-400">{confidence}%</span>
+          </div>
+        </div>
+
+        <div className="text-left">
+          <p className="text-xl font-medium mb-2">Explanation:</p>
+          <div className="text-gray-300 leading-relaxed font-normal text-[15px] whitespace-pre-line">
+            {explanation}
+          </div>
         </div>
       </div>
 
-      <div className="text-sm leading-relaxed text-gray-200 mb-6">
-        <strong className="text-purple-400">Explanation:</strong>
-        <br />
-        {explanation}
-      </div>
-
-      {/* Feedback Section */}
       {!feedbackGiven && (
-        <div className="space-y-3">
-          <p className="text-sm font-medium text-gray-300">
-            Was the AI correct?
-          </p>
-          <div className="flex gap-4">
+        <div className="mt-10 space-y-4 text-center">
+          <p className="text-sm text-gray-400">Was the AI correct?</p>
+
+          <div className="flex justify-center gap-4">
             <button
               onClick={() => handleFeedback(true)}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
+              className="px-4 py-2 rounded-full bg-neutral-800 hover:bg-green-600/10 border border-gray-700 hover:border-green-500 text-sm text-white transition-all"
             >
               ✅ AI Got It Right
             </button>
+
             <button
               onClick={() => handleFeedback(false)}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg"
+              className="px-4 py-2 rounded-full bg-neutral-800 hover:bg-red-600/10 border border-gray-700 hover:border-red-500 text-sm text-white transition-all"
             >
               ❌ AI Got It Wrong
             </button>
           </div>
 
-          {/* Show correction input only if AI was marked wrong */}
           {aiCorrect === false && (
-            <>
+            <div className="text-left">
               <textarea
-                placeholder="If you want, add your correction..."
-                className="w-full p-2 rounded bg-gray-700 text-white border border-purple-500 focus:outline-none"
+                className="w-full mt-4 p-3 rounded-lg bg-neutral-900 text-white border border-gray-700 focus:outline-none focus:border-white transition"
                 rows={3}
+                placeholder="Optional: Write the correct information..."
                 value={userCorrection}
                 onChange={(e) => setUserCorrection(e.target.value)}
               />
               {userCorrection.trim() && (
                 <button
                   onClick={handleSubmitFeedback}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg"
+                  className="mt-2 px-4 py-2 bg-white text-black rounded-full font-medium hover:shadow-md transition"
                 >
                   Submit Feedback
                 </button>
               )}
-            </>
+            </div>
           )}
         </div>
       )}

@@ -10,23 +10,28 @@ const historySlice = createSlice({
   initialState,
   reducers: {
     addToHistory: (state, action) => {
-        state.history.unshift(action.payload)
-        saveToStorage(state.history)
+      state.history.unshift(action.payload);
+      saveToStorage(state.history);
     },
     clearHistory: (state, action) => {
-        state.history = []
-        saveToStorage([])
+      state.history = [];
+      saveToStorage([]);
     },
     updateFeedback: (state, action) => {
-        const {id, feedback} = action.payload
-        const item = state.history.find((h) => h.id === id)
-        if(item) {
-            item.feedback = feedback
-            saveToStorage(state.history)
-        }
-    
+      const { id, feedback } = action.payload;
+      const item = state.history.find((h) => h.id === id);
+      if (item) {
+        item.feedback = feedback;
+        saveToStorage(state.history);
+      }
+    },
+    clearHisory: (state) => {
+      state.history = [];
+      localStorage.removeItem("truthcheck-history")
+    }
   },
-}});
+});
 
-export const {addToHistory, clearHistory, updateFeedback} = historySlice.actions
-export default historySlice.reducer
+export const { addToHistory, clearHistory, updateFeedback,clearHisory } =
+  historySlice.actions;
+export default historySlice.reducer;

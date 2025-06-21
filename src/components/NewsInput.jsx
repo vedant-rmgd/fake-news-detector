@@ -5,37 +5,40 @@ import { analyzeNewsWithAI } from "../utils/openRouter";
 import { addToHistory } from "../redux/historySlice";
 import { parseAIResponse } from "../utils/parseAIResponse";
 
-function NewsInput({setIsTyping, setLoading, loading, onAgainNewsSearch}) {
+function NewsInput({
+  setIsTyping,
+  setLoading,
+  loading,
+  onAgainNewsSearch,
+  onSubmitComplete,
+}) {
   const [headline, setHeadline] = useState("");
   const [article, setArticle] = useState("");
-  const [showArticleInput, setShowArticleInput] = useState(false);
-  // const [loading, setLoading] = useState(false);
-  // const [isTyping, setIsTyping] = useState(false)
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!headline.trim() && !article.trim()) return;
-
-    const userInput = `${headline} \n\n${article}`;
+    if (!headline.trim() || !article.trim()) return;
+    const userInput = `${headline.trim()}\n\n${article.trim()}`;
     setLoading(true);
-    setIsTyping(false)
+    setIsTyping(false);
 
     try {
       const aiText = await analyzeNewsWithAI(userInput);
-      console.log(aiText)
       const { result, confidence, explanation } = parseAIResponse(aiText);
 
       const historyItem = {
         id: uuidv4(),
-        news: userInput.trim(),
+        news: userInput,
         result,
         confidence,
         explanation,
         createdAt: new Date().toISOString(),
         feedback: { aiCorrect: null, userCorrection: "" },
       };
+
       dispatch(addToHistory(historyItem));
+      onSubmitComplete();
       setHeadline("");
       setArticle("");
     } catch (error) {
@@ -48,46 +51,42 @@ function NewsInput({setIsTyping, setLoading, loading, onAgainNewsSearch}) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full flex flex-col items-center gap-4"
+      className="w-full flex flex-col items-center gap-5 px-4 "
     >
       <textarea
         rows={3}
-        placeholder="Paste news headline or short summary..."
-        className="w-full md:w-[600px] p-4 rounded-xl bg-[#1a1a1d] text-white border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none placeholder-gray-500"
+        required
+        placeholder="Paste headline or summary..."
+        className="w-full max-w-2xl p-4 rounded-xl bg-[#1f1f1f] text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-white/10 placeholder-gray-500 resize-none transition hide-scrollbar"
         value={headline}
-        onChange={(e) => {setHeadline(e.target.value); setIsTyping(true);}}
+        onChange={(e) => {
+          setHeadline(e.target.value);
+          setIsTyping(true);
+        }}
       />
 
-      {showArticleInput && (
-        <textarea
-          rows={6}
-          placeholder="Paste full article (optional)"
-          className="w-full md:w-[600px] p-4 rounded-xl bg-[#1a1a1d] text-white border border-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none placeholder-gray-500"
-          value={article}
-          onChange={(e) => {setArticle(e.target.value); setIsTyping(true)}}
-        />
-      )}
+      <textarea
+        rows={6}
+        required
+        placeholder="Paste full article (required)"
+        className="w-full max-w-2xl p-4 rounded-xl bg-[#1f1f1f] text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-white/10 placeholder-gray-500 resize-none transition hide-scrollbar"
+        value={article}
+        onChange={(e) => {
+          setArticle(e.target.value);
+          setIsTyping(true);
+        }}
+      />
 
-      <div className="flex gap-4">
-        <button
-          type="button"
-          onClick={() => setShowArticleInput(!showArticleInput)}
-          className="text-sm text-purple-400 underline hover:text-purple-200"
-        >
-          {showArticleInput ? "Remove article" : "Add full article"}
-        </button>
-
-        <button
-          type="submit"
-          onClick={() => onAgainNewsSearch()}
-          disabled={loading}
-          className={`px-6 py-2 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 transition-all ${
-            loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        >
-          {loading ? "Analyzing..." : "Check Authenticity"}
-        </button>
-      </div>
+      <button
+        type="submit"
+        onClick={() => onAgainNewsSearch()}
+        disabled={loading}
+        className={`px-6 py-2 rounded-full bg-white text-black font-medium hover:bg-gray-100 transition-all shadow-md ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+      >
+        {loading ? "Analyzing..." : "Check Authenticity"}
+      </button>
     </form>
   );
 }

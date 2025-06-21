@@ -17,29 +17,16 @@ export function parseAIResponse(aiText) {
     return { result: "Uncertain", confidence: 0, explanation: "" };
   }
 
-  // Regular expressions for extracting details
   const resultMatch = aiText.match(/Result:\s*(Fake|Real|Uncertain)/);
   const confidenceMatch = aiText.match(/Confidence:\s*(\d+)/);
   const explanationMatch = aiText.match(/Explanation:\s*(.*)/);
 
-  // const result = resultMatch ? resultMatch[1] : "Uncertain";
-  // const confidence = confidenceMatch ? parseInt(confidenceMatch[1], 10) : 0;
-  // const explanation = explanationMatch ? explanationMatch[1] : "";
-
   const parsed = {
-    result : resultMatch ? resultMatch[1] : "Uncertain",
-    confidence : confidenceMatch ? parseInt(confidenceMatch[1], 10) : 0,
-    explanation : explanationMatch ? explanationMatch[1] : "",
-
-  }
+    result: resultMatch ? resultMatch[1] : "Uncertain",
+    confidence: confidenceMatch ? parseInt(confidenceMatch[1], 10) : 0,
+    explanation: explanationMatch ? explanationMatch[1] : "",
+  };
 
   console.log("Parsed AI response object:", parsed);
-
-  // return {
-  //   result,
-  //   confidence,
-  //   explanation,
-  // };
-
-  return parsed
+  return parsed;
 }
