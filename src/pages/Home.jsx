@@ -26,7 +26,7 @@ function Home() {
     <div>
       <div className="min-h-screen bg-[#0f0f11] text-white flex">
         <HistorySidebar />
-        <div className="flex-1 ml-72 px-6 py-6">
+        <div className="flex-1 ml-70 px-6 py-6">
           <main className="flex flex-col items-center justify-center min-h-screen text-center px-4">
             <h1 className="text-xl md:text-5xl font-semibold text-white mb-6">
               Uncover fake news in seconds with <br />
