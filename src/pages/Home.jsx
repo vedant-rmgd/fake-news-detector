@@ -23,32 +23,37 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f11] text-white flex">
-      <HistorySidebar />
-      <div className="flex-1 ml-72 px-6 py-6">
-        <main className="flex flex-col items-center justify-center min-h-screen text-center px-4">
-          <h1 className="text-xl md:text-5xl font-semibold text-white mb-6">
-            Uncover fake news in seconds with <br />
-          </h1>
-          <span className="text-xl md:text-6xl bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent font-bold mb-6">
-            TruthCheck AI
-          </span>
-          <NewsInput
-            setIsTyping={setIsTyping}
-            setLoading={setLoading}
-            onAgainNewsSearch={() => handleNewNewsSubmit(false)}
-            loading={loading}
-            onSubmitComplete={() => setShowResult(true)}
-          />
-
-          {shouldShowResult && (
-            <ResultCard
-              resultData={latestNews}
-              onFeedbackComplete={handleFeedbackComplete}
+    <div>
+      <div className="min-h-screen bg-[#0f0f11] text-white flex">
+        <HistorySidebar />
+        <div className="flex-1 ml-72 px-6 py-6">
+          <main className="flex flex-col items-center justify-center min-h-screen text-center px-4">
+            <h1 className="text-xl md:text-5xl font-semibold text-white mb-6">
+              Uncover fake news in seconds with <br />
+            </h1>
+            <span className="text-xl md:text-6xl bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent font-bold mb-6">
+              TruthCheck AI
+            </span>
+            <NewsInput
+              setIsTyping={setIsTyping}
+              setLoading={setLoading}
+              onAgainNewsSearch={() => handleNewNewsSubmit(false)}
+              loading={loading}
+              onSubmitComplete={() => setShowResult(true)}
             />
-          )}
-        </main>
+            {shouldShowResult && (
+              <ResultCard
+                resultData={latestNews}
+                onFeedbackComplete={handleFeedbackComplete}
+              />
+            )}
+          </main>
+        </div>
       </div>
+      <p className="text-xs text-gray-400 text-center mt-1 italic ml-72">
+        ⚠️ AI may not always be correct. Please verify news from reliable
+        sources.
+      </p>
     </div>
   );
 }
