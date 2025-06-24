@@ -22,7 +22,7 @@ export async function analyzeNewsWithAI(userInput) {
     headers: {
       Authorization: `Bearer ${OPENROUTE_API_KEY}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": "http://localhost:5173",
+      "HTTP-Referer": "https://fake-news-detector-orcin.vercel.app/",
       "X-Title": "TruthCheck AI",
     },
     body: JSON.stringify({
