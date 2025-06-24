@@ -24,10 +24,8 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-[#0f0f11] text-white flex flex-col sm:flex-row">
-      {/* Sidebar */}
       <HistorySidebar />
 
-      {/* Main Content */}
       <div className="flex-1 sm:ml-72 px-4 sm:px-6 py-6">
         <main className="flex flex-col items-center justify-center min-h-screen text-center">
           <h1 className="text-xl sm:text-3xl lg:text-5xl font-semibold mb-4">
@@ -52,8 +50,6 @@ function Home() {
             />
           )}
         </main>
-
-        {/* Disclaimer */}
         <p className="text-xs text-gray-400 text-center mt-4 italic">
           ⚠️ AI may not always be correct. Please verify news from reliable
           sources.

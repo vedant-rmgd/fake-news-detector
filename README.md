@@ -1,12 +1,45 @@
-# React + Vite
+# TruthCheck AI
+TruthCheck AI is a simple and minimalistic web application that helps users detect fake news using AI. Just paste a news headline and its full article, and the app will analyze it to determine if the news is likely **Real** or **Fake**, along with a confidence score and explanation.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔎 **AI-Powered Analysis** of news articles  
+- 📊 **Confidence Score** with visual bar  
+- 🧠 **Explanation** from AI in readable format  
+- ✅❌ **Feedback System** – users can tell if AI was right or wrong  
+- 🕓 **History Sidebar** to revisit past analyses  
+- 📱 **Responsive UI** for mobile and desktop  
+- 🧼 Clean and distraction-free **Minimal UI**  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ⚙️ Tech Stack
+
+React - Frontend framework for building UI  
+Tailwind CSS - Utility-first styling framework for UI  
+Redux Toolkit - Global State Management  
+Openrouter API - For querying LLMs to analyze the news  
+Custom Parser - Parses AI response into structured format
+
+---
+
+## 🧪 How It Works
+
+1. User inputs a **headline** and **article**.  
+2. App sends this data to **OpenRouter (LLM)** via API.  
+3. AI responds with a result (`Fake` or `Real`), confidence, and explanation.  
+4. User can review the result and give feedback.  
+5. All previous analyses are saved in the **history** sidebar.  
+
+## 🧪 How to Run Locally
+
+git clone https://github.com/vedant-rmgd/fake-news-detector  
+cd Blog-app  
+npm install  
+npm run dev  
+
+## 📜 License
+
+This project is open-source and available under the MIT License.

@@ -8,7 +8,6 @@ function HistorySidebar() {
   const dispatch = useDispatch();
   const [expandedId, setExpandedId] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  console.log(history);
 
   const toggleExpand = (id) => {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -18,7 +17,7 @@ function HistorySidebar() {
     setIsCollapsed((prev) => !prev);
   };
 
-  if (history.length === 0 && isCollapsed) return null;
+  //if (history.length === 0 && isCollapsed) return null;
 
   return (
     <div
@@ -26,7 +25,6 @@ function HistorySidebar() {
         isCollapsed ? "w-16" : "w-72 h-screen"
       } overflow-y-auto bg-[#111111] border-r border-gray-800 fixed left-0 top-0 z-10 transition-all duration-300 ease-in-out block hide-scrollbar`}
     >
-      {/* Header with toggle */}
       <div className="flex justify-between items-center p-3">
         {!isCollapsed && (
           <h2 className="text-base font-semibold text-white tracking-wide">
@@ -47,7 +45,6 @@ function HistorySidebar() {
 
       {!isCollapsed && (
         <div className="p-4 space-y-4">
-          {/* Clear All */}
           <div>
             <button
               onClick={() => dispatch(clearHisory())}
@@ -58,46 +55,51 @@ function HistorySidebar() {
             </button>
           </div>
 
-          {/* History List */}
           <div className="space-y-3">
-            {history.map((entry) => (
-              <div
-                key={entry.id}
-                className="bg-[#1a1a1a] py-2 px-3 rounded-lg border border-gray-700 hover:border-gray-600 transition"
-              >
-                <button
-                  onClick={() => toggleExpand(entry.id)}
-                  className="w-full text-left"
+            {history.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center">
+                No history yet
+              </p>
+            ) : (
+              history.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="bg-[#1a1a1a] py-2 px-3 rounded-lg border border-gray-700 hover:border-gray-600 transition"
                 >
-                  <p className="font-medium text-sm text-white truncate">
-                    {entry.news}
-                  </p>
-                  <p className="text-xs text-gray-300 mt-1">
-                    {new Date(entry.createdAt).toLocaleTimeString()}
-                  </p>
-                </button>
+                  <button
+                    onClick={() => toggleExpand(entry.id)}
+                    className="w-full text-left"
+                  >
+                    <p className="font-medium text-sm text-white truncate">
+                      {entry.news}
+                    </p>
+                    <p className="text-xs text-gray-300 mt-1">
+                      {new Date(entry.createdAt).toLocaleTimeString()}
+                    </p>
+                  </button>
 
-                {expandedId === entry.id && (
-                  <div className="mt-2 text-sm text-gray-400 space-y-1">
-                    <p>
-                      <strong>Result:</strong> {entry.result}
-                    </p>
-                    <p>
-                      <strong>Confidence:</strong> {entry.confidence}%
-                    </p>
-                    <p>
-                      <strong>Explanation:</strong> {entry.explanation}
-                    </p>
-                    {entry.feedback?.aiCorrect !== undefined && (
+                  {expandedId === entry.id && (
+                    <div className="mt-2 text-sm text-gray-400 space-y-1">
                       <p>
-                        <strong>Feedback:</strong>{" "}
-                        {entry.feedback.aiCorrect ? "✅ Correct" : "❌ Wrong"}
+                        <strong>Result:</strong> {entry.result}
                       </p>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
+                      <p>
+                        <strong>Confidence:</strong> {entry.confidence}%
+                      </p>
+                      <p>
+                        <strong>Explanation:</strong> {entry.explanation}
+                      </p>
+                      {entry.feedback?.aiCorrect !== null && (
+                        <p>
+                          <strong>Feedback:</strong>{" "}
+                          {entry.feedback.aiCorrect ? "✅ Correct" : "❌ Wrong"}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
           </div>
         </div>
       )}

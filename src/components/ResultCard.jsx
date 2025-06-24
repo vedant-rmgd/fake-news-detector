@@ -36,14 +36,12 @@ function ResultCard({ resultData, onFeedbackComplete }) {
 
   return (
     <div className="bg-[#121212] text-white px-4 sm:px-8 py-8 rounded-xl shadow-md border border-neutral-700 w-full max-w-4xl mx-auto mt-8 font-sans">
-      {/* Title */}
       <div className="flex items-center justify-center mb-6">
         <h2 className="text-3xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-yellow-400">
           Fact Check
         </h2>
       </div>
 
-      {/* Results */}
       <div className="space-y-6">
         <div className="text-left">
           <p className="text-lg sm:text-xl font-medium">
@@ -63,7 +61,7 @@ function ResultCard({ resultData, onFeedbackComplete }) {
         </div>
 
         <div className="text-left">
-          <p className="text-lg sm:text-xl font-medium mb-2">Confidence:</p>
+          <p className="text-lg sm:text-xl font-medium mb-2">Confidence: </p>
           <div className="flex items-center gap-4">
             <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
               <div
@@ -85,7 +83,6 @@ function ResultCard({ resultData, onFeedbackComplete }) {
         </div>
       </div>
 
-      {/* Feedback Section */}
       {!feedbackGiven && (
         <div className="mt-10 space-y-4 text-center">
           <p className="text-sm text-gray-400">Was the AI correct?</p>
@@ -104,7 +101,6 @@ function ResultCard({ resultData, onFeedbackComplete }) {
             </button>
           </div>
 
-          {/* Correction textarea */}
           {aiCorrect === false && (
             <div className="text-left mt-4">
               <textarea
