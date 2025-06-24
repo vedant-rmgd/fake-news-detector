@@ -23,10 +23,11 @@ function HistorySidebar() {
   return (
     <div
       className={`${
-        isCollapsed ? "w-15" : "w-72"
-      } h-screen overflow-y-auto bg-[#111111] border-r border-gray-800 fixed left-0 top-0 z-10 transition-all duration-300 ease-in-out hidden sm:block hide-scrollbar`}
+        isCollapsed ? "w-16" : "w-72 h-screen"
+      } overflow-y-auto bg-[#111111] border-r border-gray-800 fixed left-0 top-0 z-10 transition-all duration-300 ease-in-out block hide-scrollbar`}
     >
-      <div className="flex justify-between p-2">
+      {/* Header with toggle */}
+      <div className="flex justify-between items-center p-3">
         {!isCollapsed && (
           <h2 className="text-base font-semibold text-white tracking-wide">
             History
@@ -34,24 +35,30 @@ function HistorySidebar() {
         )}
         <button
           onClick={toggleSidebar}
-          className="w-10 h-8 p-2 flex items-center justify-center rounded-lg bg-zinc-500 hover:bg-gray-400 hover:text-white transition"
+          className="w-9 h-8 flex items-center justify-center rounded-lg bg-zinc-500 hover:bg-gray-400 transition"
         >
-          {isCollapsed ? (<img src="/sidebar (1).png"/>) : (<img src="/sidebar.png"/>)}
+          <img
+            src={isCollapsed ? "/sidebar (1).png" : "/sidebar.png"}
+            alt="toggle"
+            className="w-4 h-4 object-contain"
+          />
         </button>
       </div>
 
       {!isCollapsed && (
         <div className="p-4 space-y-4">
+          {/* Clear All */}
           <div>
             <button
               onClick={() => dispatch(clearHisory())}
-              className="flex items-center gap-1 text-md font-medium  text-red-400 hover:text-red-500"
+              className="flex items-center gap-2 text-sm text-red-400 hover:text-red-500 font-medium"
             >
-              <img src="/delete (2).png" alt="trashbin" width={17} height={17} />
+              <img src="/delete (2).png" alt="trashbin" className="w-4 h-4" />
               Clear
             </button>
           </div>
 
+          {/* History List */}
           <div className="space-y-3">
             {history.map((entry) => (
               <div
@@ -65,7 +72,7 @@ function HistorySidebar() {
                   <p className="font-medium text-sm text-white truncate">
                     {entry.news}
                   </p>
-                  <p className="text-xs text-gray-300 mt-2">
+                  <p className="text-xs text-gray-300 mt-1">
                     {new Date(entry.createdAt).toLocaleTimeString()}
                   </p>
                 </button>
@@ -79,8 +86,7 @@ function HistorySidebar() {
                       <strong>Confidence:</strong> {entry.confidence}%
                     </p>
                     <p>
-                      <strong>Explanation:</strong>{" "}
-                      {entry.explanation}
+                      <strong>Explanation:</strong> {entry.explanation}
                     </p>
                     {entry.feedback?.aiCorrect !== undefined && (
                       <p>
